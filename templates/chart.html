@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Stock Chart</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <h1>Stock Chart for {{ symbol }}</h1>
+
+    <canvas id="chart"></canvas>
+    
+    <script>
+        var data = {
+            labels: Object.keys({{ data | tojson | safe }}),
+            datasets: [{
+                label: 'Stock Price',
+                data: Object.values({{ data | tojson | safe }}),
+                fill: false,
+                borderColor: 'blue',
+                backgroundColor: 'rgba(0, 0, 255, 0.1)',
+                borderWidth: 1
+            }]
+        };
+
+        var ctx = document.getElementById('chart').getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
+            data: data,
+            options: {
+                responsive: true,
+                scales: {
+                    x: {
+                        display: true,
+                        title: {
+                            display: true,
+                            text: 'Date'
+                        }
+                    },
+                    y: {
+                        display: true,
+                        title: {
+                            display: true,
+                            text: 'Stock Price'
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
